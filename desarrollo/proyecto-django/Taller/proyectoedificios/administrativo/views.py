@@ -138,7 +138,7 @@ class UserViewSet(viewsets.ModelViewSet):
     """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
 
 class GroupViewSet(viewsets.ModelViewSet):
@@ -147,7 +147,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all()
     serializer_class = GroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
 
 class EdificioViewSet(viewsets.ModelViewSet):
     """
@@ -169,4 +169,11 @@ class DepartamentoViewSet(viewsets.ModelViewSet):
     serializer_class = DepartamentoSerializer
     # permission_classes = [permissions.IsAuthenticated]
 
+    def get_queryset(self):         
+        valor = self.request.query_params
+        print(valor)
+        if 'propietario' in valor.keys():
+            return Departamento.objects.filter(propietario=valor['nomPropietario']).all()
+        else:
+            return Departamento.objects.all()
 
